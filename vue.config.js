@@ -6,6 +6,7 @@ module.exports = {
         target: 'http://manage.yecaodai.com/',
         changeOrigin: true
       }
-    }
+    },
+    port: 8088
   }
 }
