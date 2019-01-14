@@ -7,6 +7,6 @@ module.exports = {
         changeOrigin: true
       }
     },
-    port: 8088
+    port: 8081
   }
 }
