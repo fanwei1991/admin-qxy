@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    fanwei
     <img src="./assets/logo.png">
     <div>
       <p>
