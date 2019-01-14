@@ -1,6 +1,6 @@
 # admin-qxy
 
-## Project setup
+## Project setup1
 ```
 npm install
 ```
