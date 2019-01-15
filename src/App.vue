@@ -1,46 +1,26 @@
 <template>
   <div id="app">
-    fanwei
-    <img src="./assets/logo.png">
-    <div>
-      <p>
-        If Element is successfully added to this project, you'll see an
-        <code v-text="'<el-button>'"></code>
-        below
-      </p>
-      {{API_URL}}
-      <el-button>el-button</el-button>
-    </div>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <!--<Login v-if="$route.path === '/login'"></Login>-->
+    <!--<Home v-else></Home>-->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import { getInfo } from './api/test'
+// import Login from './views/Login'
+// import Home from './views/Home'
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  },
-  data () {
-    return {
-      API_URL: process.env.NODE_ENV + ':::' + process.env.VUE_APP_API_URL + ':::' + process.env.VUE_APP_UPLOAD_URL
-    }
-  },
-  created () {
-    getInfo()
-  }
+  name: 'app'
 }
 </script>
 
-<style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
+<style lang="scss">
+  * {
+    margin: 0;
+  }
+
+  body, #app {
+    min-height: 100vh;
+    min-width: 1000px;
   }
 </style>
