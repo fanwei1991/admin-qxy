@@ -128,7 +128,7 @@ export default {
       border: 1px solid #e6e6e6;
       min-height: 100%;
       border-radius: 4px;
-      padding: 10px;
+      padding: 20px 15px;
       box-shadow: 0 0 8px rgba(193, 176, 178, 0.6);
       &:hover {
         box-shadow: 0 0 12px rgba(193, 176, 178, 1);
