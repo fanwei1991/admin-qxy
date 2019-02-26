@@ -9,7 +9,7 @@ const router = new Router({
   routes: [
     // {
     //   path: '*',
-    //   redirect: '/questions'
+    //   redirect: '/backlog'
     // },
     {
       path: '/login',
@@ -21,48 +21,108 @@ const router = new Router({
       }
     },
     {
-      path: '/questions',
-      component: () => import(/* webpackChunkName: "home" */ './views/Home.vue'),
+      path: '/backlog',
+      component: () => import(/* webpackChunkName: "Index" */ './views/Index.vue'),
+      redirect: '/backlog/index',
       meta: {
-        navName: '题库管理' // 一级导航名称
+        navName: '工作台', // 一级导航名称
+        icon: 'el-icon-menu'
       },
       children: [
         {
-          path: '',
-          component: () => import('./views/questions/list.vue'),
+          path: 'index',
+          component: () => import('./views/backlog/Index.vue'),
           meta: {
-            title: '题库列表'
+            title: 'TA工作台',
+            isNav: true // 是否为菜单栏
           }
         },
         {
-          path: 'list',
-          component: () => import('./views/questions/list.vue'),
+          path: 'wechat',
+          component: () => import('./views/backlog/Index.vue'),
           meta: {
-            title: '题库列表',
-            isNav: true // 是否未菜单栏
+            title: '待办-添加微信',
+            isNav: true // 是否为菜单栏
           }
         },
         {
-          path: 'list/add',
-          component: () => import('./views/questions/form.vue'),
+          path: 'group',
+          component: () => import('./views/backlog/Index.vue'),
           meta: {
-            title: '题库管理'
+            title: '待办-拉群',
+            isNav: true // 是否为菜单栏
+          }
+        },
+        {
+          path: 'start',
+          component: () => import('./views/backlog/Index.vue'),
+          meta: {
+            title: '待办-开学典礼',
+            isNav: true // 是否为菜单栏
+          }
+        },
+        {
+          path: 'remind',
+          component: () => import('./views/backlog/Index.vue'),
+          meta: {
+            title: '待办-上课提醒',
+            isNav: true // 是否为菜单栏
+          }
+        },
+        {
+          path: 'homework',
+          component: () => import('./views/backlog/Index.vue'),
+          meta: {
+            title: '待办-作业批改-已交',
+            isNav: true // 是否为菜单栏
+          }
+        },
+        {
+          path: 'visit',
+          component: () => import('./views/backlog/Index.vue'),
+          meta: {
+            title: '待办-家访',
+            isNav: true // 是否为菜单栏
+          }
+        },
+        {
+          path: 'renew',
+          component: () => import('./views/backlog/Index.vue'),
+          meta: {
+            title: '待办-续费转化',
+            isNav: true // 是否为菜单栏
+          }
+        },
+        {
+          path: 'graduate',
+          component: () => import('./views/backlog/Index.vue'),
+          meta: {
+            title: '待办-毕业典礼',
+            isNav: true // 是否为菜单栏
           }
         }
       ]
     },
     {
-      path: '/data',
-      component: () => import(/* webpackChunkName: "home" */ './views/Home.vue'),
+      path: '/sop-setting',
+      component: () => import(/* webpackChunkName: "backlog" */ './views/Index.vue'),
       meta: {
-        navName: '数据管理'
+        navName: 'SOP设置'
       },
       children: [
         {
-          path: 'list',
-          component: () => import('./views/data/list.vue'),
+          path: 'index',
+          component: () => import('./views/sop-setting/list.vue'),
           meta: {
-            title: '数据列表',
+            title: 'SOP列表',
+            isNav: true
+          }
+        },
+        {
+          path: 'add',
+          component: () => import('./views/sop-setting/list.vue'),
+          meta: {
+            title: '新增SOP',
             isNav: true
           }
         }
@@ -78,7 +138,7 @@ router.beforeEach((to, from, next) => {
     location.replace(`/login?redirect=${encodeURIComponent(to.fullPath)}`)
   } else {
     if (to.path === '/') {
-      next('/questions/list')
+      next('/backlog/list')
     }
     next()
   }

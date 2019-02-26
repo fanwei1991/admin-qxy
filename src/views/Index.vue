@@ -1,9 +1,19 @@
 <template>
-  <div class="home">
+  <div class="index">
     <el-header class="header">
       <el-row>
         <el-col :span="6">
-          <h2 class="logo">趣学园管理后台</h2>
+          <h2 class="logo">辅导老师管理后台</h2>
+        </el-col>
+        <el-col :span="4" :offset="14" class="header-r">
+          <el-dropdown>
+            <span class="el-dropdown-link">
+    下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+  </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </el-col>
       </el-row>
     </el-header>
@@ -16,18 +26,19 @@
           :collapse="isCollapse"
           class="el-menu"
           @select="handleSelect"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#ffd04b">
-          <el-submenu v-for="(item, index) in navList" :key="index" :index="item.index.slice(1)">
+          background-color="#fafafa"
+          text-color="#333"
+          active-text-color="#f90">
+          <el-submenu class="submenu" v-for="(item, index) in navList" :key="index" :index="item.index.slice(1)">
             <template slot="title">
-              <i class="el-icon-location"></i>
+              <i :class="item.icon"></i>
               <span>{{item.navName}}</span>
             </template>
-            <el-menu-item v-for="(itm, ind) in item.child" :key="ind" :index="itm.path">{{itm.name}}</el-menu-item>
+            <el-menu-item class="menu-item" v-for="(itm, ind) in item.child" :key="ind" :index="itm.path">{{itm.name}}
+            </el-menu-item>
           </el-submenu>
         </el-menu>
-        <el-button class="btn-toggle" size="small" type="info" :icon="btnIcon" @click="menuToggle"></el-button>
+        <el-button class="btn-toggle" size="small" :icon="btnIcon" @click="menuToggle"></el-button>
       </el-aside>
       <el-main style="padding: 10px">
         <div class="main-content">
@@ -39,6 +50,7 @@
 </template>
 
 <script>
+import { getInfo } from '@/api/test'
 
 export default {
   name: 'home',
@@ -53,6 +65,7 @@ export default {
     }
   },
   created () {
+    getInfo()
     this.defaultActive = '/' + this.$route.path.split('/').slice(1, 3).join('/')
     // 获取路由配置信息
     let routes = this.$router.options.routes
@@ -61,6 +74,7 @@ export default {
       if (item.children) {
         let itemData = {
           navName: item.meta.navName,
+          icon: item.meta.icon || 'el-icon-setting',
           index: item.path,
           child: []
         }
@@ -97,24 +111,49 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .home {
+  .index {
+    background: #f0f0f0;
+
     .header {
-      background-color: #3e4750;
+      background-color: #fafafa;
       line-height: 60px;
-      color: #fff;
+      height: 60px;
+      overflow: hidden;
+      color: #333;
+      border-bottom: 1px solid #eee;
+
+      .header-r {
+        text-align: right;
+      }
     }
 
     .aside {
-      background: #4d555d;
+      background: #fff;
       min-height: calc(100vh - 60px);
       box-sizing: border-box;
       border-right: 1px solid #e6e6e6;
       max-width: 200px !important;
       transition: width ease .4s;
       position: relative;
+
       .el-menu {
         border-right: 0;
+        width: 100%;
+        transition: width ease .4s;
+
+        /deep/ .el-submenu__title:hover {
+          background: #ecf5ff !important;
+        }
+
+        .menu-item {
+          background: #f0f0f0 !important;
+        }
+
+        &.el-menu--collapse {
+          width: 64px;
+        }
       }
+
       .btn-toggle {
         position: absolute;
         left: 50%;
@@ -124,12 +163,14 @@ export default {
     }
 
     .main-content {
+      background: #fff;
       box-sizing: border-box;
       border: 1px solid #e6e6e6;
       min-height: 100%;
       border-radius: 4px;
       padding: 20px 15px;
       box-shadow: 0 0 8px rgba(193, 176, 178, 0.6);
+
       &:hover {
         box-shadow: 0 0 12px rgba(193, 176, 178, 1);
       }

@@ -19,7 +19,7 @@ export default {
       if (this.redirectUrl) {
         this.$router.replace(this.redirectUrl)
       } else {
-        this.$router.replace('/questions/list')
+        this.$router.replace('/backlog/list')
       }
     }
   }

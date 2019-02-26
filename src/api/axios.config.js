@@ -1,35 +1,55 @@
-import Axios from 'axios'
+import axios from 'axios'
+import NProgress from 'nprogress'
 import { Message } from 'element-ui'
 
 console.log(process.env)
+const isDev = process.env.NODE_ENV === 'development'
 
-Axios.defaults.baseURL = process.env.VUE_APP_API_URL
+axios.defaults.baseURL = process.env.VUE_APP_API_URL
 
-Axios.interceptors.request.use(config => {
+axios.interceptors.request.use(config => {
+  NProgress.start()
   return config
 }, err => {
   Message.error({ message: '请求超时!' })
   return Promise.resolve(err)
 })
-Axios.interceptors.response.use(data => {
+axios.interceptors.response.use(data => {
+  NProgress.done()
   if (data.status && data.status === 200 && data.data.status === 'error') {
     Message.error({ message: data.data.msg })
     return
   }
   return data
-}, err => {
-  if (err.response.status === 504 || err.response.status === 404) {
-    Message.error({ message: '服务器被吃了⊙﹏⊙∥' })
-  } else if (err.response.status === 403) {
-    Message.error({ message: '权限不足,请联系管理员!' })
-  } else {
-    Message.error({ message: '未知错误!' })
+}, error => {
+  NProgress.done()
+  let errorText = error.toString()
+  const errNo = Number(/\b\d+/.exec(errorText))
+  let data = {
+    status: '-666',
+    message: '',
+    data: null
   }
-  return Promise.resolve(err)
+  if (errNo === 400) {
+    data.message = `参数错误，错误码:${errNo}`
+  } else if (errNo === 401 || errNo === 403) {
+    Message.error('登录过期，请重新登录！')
+    // F.Cookie.set('user-token', '')
+    let path = `/manage-vipbclass/login?fromUri=${encodeURIComponent(location.href)}`
+    let basePath = 'http://test2-mgt.vipfengxiao.com'
+    setTimeout(() => {
+      location.href = isDev ? basePath + path : path
+    }, 1000)
+    data.message = `登录过期，错误码:${errNo}`
+  } else if (errNo >= 500) {
+    data.message = `服务端错误，错误码:${errNo}`
+  }
+  // 对响应错误做点什么
+  return Promise.resolve(data)
 })
 
 export const postRequest = (url, params) => {
-  return Axios({
+  return axios({
     method: 'post',
     url: url,
     data: params,
@@ -39,18 +59,18 @@ export const postRequest = (url, params) => {
   })
 }
 export const uploadRequest = (url, params) => {
-  return Axios({
+  return axios({
     method: 'post',
     url: url,
     data: params,
     headers: {
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-sop-setting'
     }
   })
 }
 
 export const getRequest = (url, params) => {
-  return Axios({
+  return axios({
     method: 'get',
     url: url,
     params: params
